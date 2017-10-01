@@ -29,11 +29,11 @@ class LinkedList {
     }
 
     head() {
-        return this._head.data;
+        return this._head.data ;
     }
 
     tail() {
-        return this._tail.data;
+        return this._tail.data ;
     }
 
     at(index) {
@@ -48,6 +48,9 @@ class LinkedList {
 
 
     insertAt(index, data) {
+
+    if (index > this.length)
+    throw new Error("Error");
 
         
     var node=new Node(data)
@@ -94,31 +97,40 @@ class LinkedList {
     }
 
     clear() {
-        this._head.data=null;
-        this._tail.data=null;
-        this.length=0;
-        return this
+        for (let i = this.length - 1; i >= 0; i--){
+            this.deleteAt(i)
+        }
+        return this;
     }
 
     deleteAt(index) {
+
+        if (this.length <= 0 || index < 0 || index >= this.length)
+        throw new Error("Error")
+        
         var curent
 
-        if (index == 0) {
-        this._head=this._head.next
-        this.length--
-    	}
-
-        if (index < this.length-1){
-        	curent=this._head
+        if (index == 0){
+            if(this.length==1){   
+                this._head=null;
+                this._tail=null;
+                this.length--;
+                 return this;
+            } else {    
+                this._head=this._head.next;
+                this.length--;
+                return this;
+            }
+        } else {
+            curent=this._head;
             for(var i=0; i<index-1; i++)
-            {curent=curent.next}}
-
-            curent.next=curent.next.next
-            curent.next.next.prev=curent
-            this.length--
-            return this
-    
-    
+            {curent=curent.next}
+            curent.next=curent.next.next;
+            curent.next.next.prev=curent;
+            this.length--;
+            return this;
+        
+        }
     }
 
     reverse() {
@@ -127,15 +139,15 @@ class LinkedList {
     	var curent=this._head
     	for(var i=0; i<this.length; i++){
     		
-    		var tmp=curent.prev
-    		curent.prev=curent.next
-    		curent.next=tmp
-    		curent=curent.prev
+    		var tmp=curent.prev;
+    		curent.prev=curent.next;
+    		curent.next=tmp;
+    		curent=curent.prev;
     	}
 
-    	var cur=this._tail
-    	this._tail=this._head
-    	this._head=cur
+    	var cur=this._tail;
+    	this._tail=this._head;
+    	this._head=cur; 
     	return this;
 
     }
@@ -158,5 +170,7 @@ class LinkedList {
 
 	
 }
+
+
 
 module.exports = LinkedList;
